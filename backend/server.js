@@ -36,12 +36,13 @@ app.use("/auth", require('./routes/auth/auth'))
 app.use("/refresh", require('./routes/auth/refresh'))
 //Logout route
 app.use("/logout", require('./routes/auth/logout'))
-//Protected route
-// app.use(verifyJWT)
 ///Projects routes
 app.use("/api/projects", require('./routes/api/projects'))
 ///Users routes
 app.use("/api/users", require('./routes/api/users'))
+///Upload file routes
+app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")))
+
 
 
 
