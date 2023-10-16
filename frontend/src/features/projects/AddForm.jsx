@@ -1,14 +1,15 @@
-import { useReducer, useState } from "react"
+import { useEffect, useReducer, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAddProjectMutation } from "../../app/api/projectsSlice"
 
-//! problème avec le select link
+//! problème avec Images et technologies
 
 const initialState = {
     name: '',
     description: '',
-    image: '',
-    technologies: [],
+    images: [{url: '', alt: ''},],
+    imagePreview: [],
+    technologies: [{name: ''},],
     link: '',
     owner: '',
     selectedTechnologies: [],
@@ -44,18 +45,60 @@ const reducer = (state, action) => {
             return {...state, name: action.payload}
         case 'description':
             return {...state, description: action.payload}
-        case 'image':
-            return {...state, image: action.payload}
-        case 'technologies':
-            return {...state, selectedTechnologies: action.payload}
-        case 'links':
-            return {...state, links: action.payload}
+        case 'images':
+            return {
+                ...state,
+                images: [{url: action.payload, alt: state.name },],
+            }
+        case 'imagePreview':
+            return { ...state, imagePreview: action.payload }
+        case 'addImage':
+            return {
+                ...state,
+                images: [ {
+                    url: action.payload,
+                    alt: state.name,
+                }, ...state.images
+                ],
+                imagePreview: [...state.imagePreview, action.payload]
+            }
+        case 'deleteImage':
+            return {
+                ...state,
+                images: state.images.filter((img, id) => id !== action.payload),
+                imagePreview: state.imagePreview.filter((img, id) => id !== action.payload)
+            }
+        case 'link':
+            return {...state, link: action.payload}
         case 'owner':
             return { ...state, owner: action.payload }
+        case 'technologies':
+            return {
+                ...state, 
+                technologies: [{ name: action.payload }],
+            }
+        case 'selectedTechnologies':
+            return { ...state, selectedTechnologies: action.payload }
         case 'addTechnologies':
-            return { ...state, technologies: [...state.technologies, action.payload] }
+            return {
+                ...state,
+                technologies: [{
+                    name: action.payload,
+                }, ...state.technologies
+                ],
+                selectedTechnologies: [],
+            }
         case 'deleteTechnologies':
-            return { ...state, technologies: [] }
+            return {
+                ...state, 
+                technologies: state.technologies.filter((tech, id) => id !== action.payload),
+                selectedTechnologies: state.selectedTechnologies.filter((tech, id) => id !== action.payload)
+            }
+        case 'deleteAllTechnologies':
+            return { ...state, technologies: [], selectedTechnologies: [] }
+        case 'clearForm':
+            return { ...initialState}
+        
         default:
             return state
     }
@@ -65,65 +108,203 @@ const reducer = (state, action) => {
 const AddForm = () => {
     const navigate = useNavigate()
     const [state, dispatch] = useReducer(reducer, initialState)
-    const { name, description, image, technologies, links, owner, selectedTechnologies } = state
-    const [addProject] = useAddProjectMutation()
-    const [imagePreview, setImagePreview] = useState(null)
+    const { name, description, images = [], technologies = [], link, owner, selectedTechnologies, imagePreview } = state
+    const [addProject,] = useAddProjectMutation()
+
+    useEffect(() => {
+        if (window.reload || window.location.pathname !== '/dashboard/add') {
+            dispatch({ type: 'clearForm' })
+        }
+    }, [window.reload, window.location.pathname])
 
 
+    //? /////////////////////////////////////////////////////////////
+    const handleChange = (e) => {
+        dispatch({type: e.target.name, payload: e.target.value})
+    }
     const handleImageChange = (e) => {
-        const file = e.target.files[0]
-        if(file) {
-            const reader = new FileReader()
-            reader.onload = (e) => {
-                setImagePreview(e.target.result)
-                dispatch({type: 'image', payload: e.target.result})
+        const file = e.target.files
+        if (file) {
+            for (let i = 0; i < file.length; i++) {
+                const reader = new FileReader()
+                reader.onload = (e) => {
+                    dispatch({ type: 'addImage', payload: e.target.result})
+                }
+                reader.readAsDataURL(file[i])
+                console.log(file[i])
             }
-            reader.readAsDataURL(file)
         }
     }
+    console.log("AtChange:", images)
+    
     const handleDrop = (e) => {
         e.preventDefault()
-        e.stopPropagation()
-        const file = e.dataTransfer.files[0]
-        if (file) {
-            const reader = new FileReader()
-            reader.onload = (e) => {
-                setImagePreview(e.target.result)
-                dispatch({ type: 'image', payload: e.target.result })
+        // e.stopPropagation()
+        const files = e.dataTransfer.files
+        if (files) {
+            for (let i = 0; i < files.length; i++) {
+                const reader = new FileReader()
+                reader.onload = (e) => {
+                    dispatch({ type: 'addImage', payload: e.target.result })
+                }
+                reader.readAsDataURL(files[i])
             }
-            reader.readAsDataURL(file)
         }
     }
+    const handleDeleteImage = (e) => {
+        dispatch({ type: 'deleteImage', payload: e })
+    }
+    //? //////////////////////////////////////////////////////////////////////
+
 
     const handleTechnologiesChange = (e) => {
-        const selectedTech = Array.from(e.target.selectedOptions, option => option.value)
-        dispatch({ type: 'technologies', payload: selectedTech })
+        const selectedTech = Array.from(e.target.selectedOptions, (option) => option.value)
+        dispatch({ type: 'selectedTechnologies', payload: selectedTech })
     }
     const handleAddTechnologies = (e) => {
         e.preventDefault()
         dispatch({ type: 'addTechnologies', payload: selectedTechnologies })
     }
+    //! Do not work
     const handleDeleteTechnologies = (e) => {
         e.preventDefault()
-        dispatch({ type: 'deleteTechnologies' })
+        dispatch({ type: 'deleteTechnologies', payload: e.target.id })
     }
-
-    const handleSubmit = async (e) => {
+    
+    const handleDeleteAllTechnologies = (e) => {
         e.preventDefault()
-        const project = { name, description, image, technologies, links, owner }
-        console.log(technologies)
+        dispatch({ type: 'deleteAllTechnologies' })
+    }
+    const handleClearForm = (e) => {
+        e.preventDefault()
+        dispatch({ type: 'clearForm' })
+    }
+   
+
+    const handleURLBlob = async (image) => {
         try {
-            await addProject(project).unwrap()
-            navigate('/dashboard')
-            window.location.reload()
+            const res = await fetch(image)
+            const blob = await res.blob()
+            console.log('Blob Image', blob)
+            return blob
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
         }
     }
 
-    const handleChange = (e) => {
-        dispatch({type: e.target.name, payload: e.target.value})
+
+    
+
+    const handleSubmit = async (e) => {
+
+
+        e.preventDefault()
+        try {
+            const formData = new FormData()
+            formData.append('name', name)
+            formData.append('description', description)
+            formData.append('link', link)
+            formData.append('owner', owner)
+            formData.append('createdAt', new Date())
+            formData.append('updatedAt', new Date())
+
+            //! //////////////////////
+            if (images.length > 0) {
+                images.map(async (image) => {
+                    const blob = await handleURLBlob(image.url)
+                    console.log('Blob in Submit', blob)
+                    formData.append('images', blob, image.name)
+                })
+            }
+            //! //////////////////////
+
+            technologies.map((technology) => {
+                formData.append('technologies', technology.name)
+            })
+            console.log('Form Data:', formData)
+
+            await addProject(formData).unwrap()
+            dispatch({ type: 'clearForm' })
+            navigate('/dashboard')
+            window.location.reload()
+        
+        } catch (error) {
+            console.log(error.message)
+        }
     }
+
+    
+
+    const renderForm = () => {
+        return (
+            <section style={formStyle}>
+
+                {/* /////////////////////////////////////// */}
+                <form onSubmit={handleSubmit} method="post" encType="multipart/form-data" >
+                    { /* /////////////////////////////////////// */}
+
+                    <label style={labelStyle} htmlFor="name">Name</label>
+                    <input style={inputStyle} type="text" name="name" value={name} onChange={handleChange} /> 
+                    <label style={labelStyle} htmlFor="description">Description</label>
+                    <input style={inputStyle} type="text" name="description" value={description} onChange={handleChange} />
+
+                    <div style={dropAreaStyle} onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
+                        {imagePreview ? (
+                            imagePreview.map((img, id) => (
+                                <div key={id}>
+                                    <img style={imageStyle} src={img} alt={name} />
+                                    <button style={buttonStyle} onClick={() => handleDeleteImage(id)}>Delete</button>
+                                </div>
+                            ))
+                        ) : (<p>Drop Image Here</p>)
+                        }
+                        <input style={inputStyle} type="file" name="images" onChange={handleImageChange} multiple />
+
+
+                            
+                    </div> 
+
+                    <label style={labelStyle} htmlFor="technologies">Technologies</label>
+                    <input style={inputStyle} type="text" name="selectedTechnologies" value={technologies.join(', ')} readOnly
+                        placeholder="Select Technologies"
+                    />
+                    <select style={inputStyle} name="technologies" multiple value={selectedTechnologies} onChange={handleTechnologiesChange}>
+                        {technologyOptions.map((tech, id) => (
+                            <option key={id} value={tech}>
+                                {tech}
+                            </option>
+
+                        ))}
+                    </select>
+                    
+                    <button style={buttonStyle} onClick={handleAddTechnologies}>+</button>
+                    <button style={buttonStyle} onClick={handleDeleteAllTechnologies}>Clear All</button>
+
+                    <label style={labelStyle} htmlFor="link">Link</label>
+                        <input style={inputStyle} type="text" name="link" value={link} onChange={handleChange} />
+                    <label style={labelStyle} htmlFor="owner">Owner</label>
+                    <input style={inputStyle} type="text" name="owner" value={owner} onChange={handleChange} />
+                    <>
+                        <button style={buttonStyle}>Add Project</button>
+                        <button style={buttonStyle} onClick={handleClearForm}>Clear Form</button>
+                    </>
+                    
+                </form>
+            </section>
+            
+        )
+    }
+    return (
+        <>
+            {renderForm()}
+        </>
+  )
+}
+
+export default AddForm
+
+
+
 
     const formStyle = {
         display: 'flex',
@@ -178,57 +359,3 @@ const AddForm = () => {
         width: '100%',
     }
 
-
-
-
-    const renderForm = () => {
-        return (
-            <section style={formStyle}>
-                <form onSubmit={handleSubmit}>
-                    <label style={labelStyle} htmlFor="name">Name</label>
-                        <input style={inputStyle} type="text" name="name" value={name} onChange={handleChange} required />
-                    <label style={labelStyle} htmlFor="description">Description</label>
-                    <input style={inputStyle} type="text" name="description" value={description} onChange={handleChange} required />
-                    
-
-
-                    <div style={dropAreaStyle} onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
-                        {imagePreview ?
-                            <img style={imageStyle} src={imagePreview} alt="preview" />
-                            : 'Drag & Drop or Click max 10mo jpg/png/svg'}
-                        <input
-                            type="file" name="image" onChange={handleImageChange} />
-                    </div> 
-
-                    <label style={labelStyle} htmlFor="technologies">Technologies</label>
-                    <input style={inputStyle} type="text" name="selectedTechnologies" value={technologies.join(', ')} readOnly />
-
-                    <select style={inputStyle} name="technologies" multiple value={selectedTechnologies} onChange={handleTechnologiesChange}>
-                        {technologyOptions.map((tech) => (
-                            <option key={tech} value={tech}>{tech}</option>
-                        ))}
-                    </select>
-
-                    <button style={buttonStyle} onClick={handleAddTechnologies}>Add Technology</button>
-                    <button style={buttonStyle} onClick={handleDeleteTechnologies}>Clear Technologies</button>
-
-
-
-                    <label style={labelStyle} htmlFor="links">Links</label>
-                        <input style={inputStyle} type="text" name="links" value={links} onChange={handleChange} />
-                    <label style={labelStyle} htmlFor="owner">Owner</label>
-                        <input style={inputStyle} type="text" name="owner" value={owner} onChange={handleChange} />
-                    <button style={buttonStyle} type="submit">Add Project</button>
-                </form>
-            </section>
-            
-        )
-    }
-    return (
-        <>
-            {renderForm()}
-        </>
-  )
-}
-
-export default AddForm
