@@ -29,16 +29,11 @@ export const authSlice = createSlice({
       localStorage.setItem('user', action.payload);
     },
     logout: (state) => {
-      localStorage.removeItem('accessToken', 'refreshToken', 'user');
       state.accessToken = null;
       state.refreshToken = null;
       state.currentUser = null;
       state.isAuthenticated = false;
-      //! This is a hack to force a page reload on logout
-      if (state.accessToken === null) {
-        window.location.reload();
-        alert('You have been logged out');
-      }
+      localStorage.clear();
     },
   },
  
