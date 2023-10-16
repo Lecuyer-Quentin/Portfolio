@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { useLoginMutation } from '../../app/api/authSlice'
 import { useDispatch } from 'react-redux'
 import { setAuth, setUser } from '../../app/api/authSlice'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 
 
@@ -31,7 +33,15 @@ const LoginForm = () => {
   const errRef = useRef()
   const navigate = useNavigate()
   const canSubmit = [state.username, state.password].every(Boolean)
-  const [ login ] = useLoginMutation()
+  const [login] = useLoginMutation()
+  
+  const notifyLogin = () => toast.success('Login successful!', {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    draggable: true,
+  })
 
   useEffect(() => {
     userRef.current.focus()
@@ -64,9 +74,10 @@ const LoginForm = () => {
       // console.log(username, roles, _id)
       //!
       navigate('/dashboard')
+      notifyLogin()
 
     } catch (err) {
-      dispatch({ type: 'error', payload: err.data.message })
+      dispatch({ type: 'error', payload: err.message })
       errRef.current.focus()
     }
   }
