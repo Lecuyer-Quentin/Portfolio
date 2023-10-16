@@ -8,13 +8,13 @@ const ProjectsList = () => {
         if (isFetching) {
             return <div>Loading...</div>
         }
+        const sortedProjects = [...projects].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
         return (
             <div>
-                {projects.map((project) => (
-                    <ProjectItem key={project._id} {...project} />   
+                {sortedProjects.map((project) => (
+                    <ProjectItem key={project._id} _id={project._id} />   
                 ))}   
-            </div>
-            
+            </div> 
         )
     }
 

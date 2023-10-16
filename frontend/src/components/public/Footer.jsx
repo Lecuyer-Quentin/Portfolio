@@ -4,23 +4,35 @@ import { logout } from "../../app/api/authSlice"
 import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { selectAccessToken } from "../../app/api/authSlice"
+import {toast} from 'react-toastify'
 
 const Footer = () => {
   const accessToken = useSelector(selectAccessToken)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const notifyLogout = () => toast.success('Logout successful!', {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    draggable: true,
+  })
+
   const handleLogout = () => {
     try {
       dispatch(logout())
-      navigate('/')
+      // navigate('/')
+      // window.location.reload()
+      notifyLogout()
     } catch (error) {
       console.log('Error: ', error)
     }
   }
+
   const renderAuthLinks = () => {
     if (accessToken !== undefined) {
-      if(accessToken) {
+      if(accessToken !== null) {
         return (
           <>
             <button onClick={handleLogout}>Logout</button>

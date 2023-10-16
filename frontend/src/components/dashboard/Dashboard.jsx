@@ -14,9 +14,10 @@ const Dashboard = () => {
     if (!projects) {
       return null
     }
+    const sortedProjects = [...projects].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     return (
       <div>
-        {projects.map((project) => (
+        {sortedProjects.map((project) => (
           <ProjectItem key={project._id} {...project} />
         ))}
       </div>

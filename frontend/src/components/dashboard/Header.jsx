@@ -8,7 +8,7 @@ const DashHeader = () => {
   
   const renderButton = () => {
     if (path === '/dashboard') return <Link to='/dashboard/add'><button>Add Project</button></Link>
-    if (path === '/dashboard/add') return <Link to='/dashboard'><button>Back to Dashboard</button></Link>
+    return <Link to='/dashboard'><button>Back to Dashboard</button></Link>
   }
  
   const render = () => {
