@@ -17,30 +17,25 @@ export const projectsSlice = createApi({
             }),
         }),
         addProject: builder.mutation({
-            query: ({ name, description, owner, image, technologies, link }) => ({
+            query: (formData) => ({
                 url: 'api/projects',
                 method: 'POST',
-                body: {
-                    name,
-                    description,
-                    owner,
-                    image,
-                    technologies,
-                    link,
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
-
-                },
+                body: formData,
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    // 'Content-Type': 'multipart/form-data',
+                    'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+                    'Content-Disposition': 'form-data',
+                    
+
                 },
             }),
         }),
         updateProject: builder.mutation({
-            query: ({ id, name, description, owner, image, technologies, link }) => ({
+            query: ({ id, name, description, owner, images, technologies, link }) => ({
                 url: `/api/projects/${id}`,
                 method: 'PUT',
-                body: { name, description, owner, image, technologies, link },
+                body: { name, description, owner, images, technologies, link },
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
