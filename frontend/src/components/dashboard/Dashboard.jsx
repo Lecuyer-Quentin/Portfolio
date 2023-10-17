@@ -1,5 +1,5 @@
 import { useGetProjectsQuery } from "../../app/api/projectsSlice" 
-import ProjectItem from "../ProjectItem"
+import ProjectItem from "../projects/ProjectItem"
 
 const Dashboard = () => {
   const { data: projects = [], isFetching, error } = useGetProjectsQuery()

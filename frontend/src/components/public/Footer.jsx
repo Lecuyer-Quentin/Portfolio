@@ -32,7 +32,7 @@ const Footer = () => {
 
   const renderAuthLinks = () => {
     if (accessToken !== undefined) {
-      if(accessToken !== null) {
+      if(accessToken) {
         return (
           <>
             <button onClick={handleLogout}>Logout</button>

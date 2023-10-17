@@ -1,4 +1,4 @@
-import { useGetProjectQuery } from "../app/api/projectsSlice"
+import { useGetProjectQuery} from "../../app/api/projectsSlice"
 import { useParams } from "react-router-dom"
 import ProjectItem from "./ProjectItem"
 import { InfinitySpin } from 'react-loader-spinner'
@@ -12,9 +12,10 @@ const ProjectDetails = () => {
     const { id } = useParams()
     const { data: project, isLoading } = useGetProjectQuery(id)
 
+
     console.log('Recup project', project)
 
-        if(isLoading) {
+    if(isLoading) {
             return <InfinitySpin
                 color='black'
                 size={200}
@@ -22,7 +23,7 @@ const ProjectDetails = () => {
                 visible={true}
                 ariaLabel='three circles loading'
             />
-        }
+    }
     
     const settings = {
         dots: true,
@@ -37,33 +38,34 @@ const ProjectDetails = () => {
 
     }
 
-    const renderSlider = () => {
+    // const renderSlider = () => {
         
-        if(!project.images) {
-            return <InfinitySpin
-                color='black'
-                size={200}
-                speed={1}
-                visible={true}
-                ariaLabel='three circles loading'
-            />
-        }
-        return (
-            <Slider {...settings}>
-                {project.images.map((image, index) => (
-                    <div key={index}>
-                        <img src={image.url} alt={image.name} />
-                    </div>
-                ))}
-            </Slider>
-        )
+    //     if(project.images === undefined || project.images.length === 0 || isLoading) {
+    //         return <InfinitySpin
+    //             color='black'
+    //             size={200}
+    //             speed={1}
+    //             visible={true}
+    //             ariaLabel='three circles loading'
+    //         />
+    //     }
+    //     return (
+    //         <Slider {...settings}>
+    //             {project.images.map((image, index) => (
+    //                 <div key={index}>
+    //                     <img src={image} alt={project.title} />
+    //                 </div>
+    //             ))}
+    //         </Slider>
+    //     )
             
-    }
+    // }
     
 
     return (
         <>
-            {renderSlider()}
+            <h2>{project.title}</h2>
+            {/* {renderSlider()} */}
         </>
     )
 }

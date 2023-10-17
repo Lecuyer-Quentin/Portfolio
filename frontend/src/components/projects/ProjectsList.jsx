@@ -1,4 +1,4 @@
-import { useGetProjectsQuery } from "../app/api/projectsSlice";
+import { useGetProjectsQuery } from "../../app/api/projectsSlice";
 import ProjectItem from "./ProjectItem";
 
 const ProjectsList = () => {
