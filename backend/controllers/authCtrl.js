@@ -33,7 +33,7 @@ const handleLogin = async (req, res) => {
             },
             process.env.ACCESS_TOKEN_SECRET,
             {
-                expiresIn: '1h'
+                expiresIn: '24h'
             }
         )
         const refreshToken = jwt.sign(
@@ -47,11 +47,6 @@ const handleLogin = async (req, res) => {
         checkUser.refreshToken = refreshToken
         // save user
         const result = await checkUser.save()
-        // //! test 
-        // console.log(result)
-        // console.log(result.username)
-        // console.log(result._id)
-        // //! test
         // send access token and refresh token to client in cookies
         res.cookie('jtw', refreshToken, { httpOnly: true, sameSite: 'none', secure: true })
         // send access token, roles and username to client in json
