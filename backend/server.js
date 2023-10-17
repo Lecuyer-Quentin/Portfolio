@@ -18,7 +18,7 @@ connectDB()
 app.use(logger)
 app.use(credentials)
 app.use(cors(corsOptions))
-// app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(bodyParser.json({ limit:'10mb'}))
 app.use(bodyParser.urlencoded({ limit:'10mb', extended: true }))
@@ -41,7 +41,7 @@ app.use("/api/projects", require('./routes/api/projects'))
 ///Users routes
 app.use("/api/users", require('./routes/api/users'))
 ///Upload file routes
-app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")))
+app.use("/uploads", express.static(path.join(__dirname, "uploads")))
 
 
 
