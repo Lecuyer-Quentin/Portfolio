@@ -29,7 +29,7 @@ const reducer = (state, action) => {
 const LoginForm = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const dispatchStore = useDispatch()
-  const userRef = useRef()
+  // const inputRef = useRef()
   const errRef = useRef()
   const navigate = useNavigate()
   const canSubmit = [state.username, state.password].every(Boolean)
@@ -43,9 +43,9 @@ const LoginForm = () => {
     draggable: true,
   })
 
-  useEffect(() => {
-    userRef.current.focus()
-  }, [])
+  // useEffect(() => {
+  //   inputRef.current.focus()
+  // }, [])
 
   useEffect(() => {
     dispatch({ type: 'error', payload: '' })
@@ -65,20 +65,14 @@ const LoginForm = () => {
     try {
       const response = await login(credentials).unwrap()
       const { accessToken, refreshToken, roles, username} = response
-      //!
-      // console.log(response)
-
       dispatchStore(setAuth(accessToken, refreshToken))
       dispatchStore(setUser(username, roles))
-      //!
-      // console.log(username, roles, _id)
-      //!
       navigate('/dashboard')
       notifyLogin()
 
     } catch (err) {
       dispatch({ type: 'error', payload: err.message })
-      errRef.current.focus()
+      errRef.current.focus() //!
     }
   }
 
@@ -88,35 +82,69 @@ const LoginForm = () => {
       }
   }
 
+  const renderInput = (name, placeholder, type, value, inputRef) => {
+    return (
+      <input
+        className='login__form__input'
+        type={type}
+        name={name}
+        placeholder={placeholder}
+        value={value}
+        ref={inputRef}
+        onChange={handleInputChange}
+      />
+    )
+  }
   const renderLoginForm = () => {
     return (
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className='login__form'>
         <div>
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            name="username"
-            ref={userRef}
-            value={state.username}
-            onChange={handleInputChange}
-          />
+          <label htmlFor="username" className='login__form__label'>Username</label>
+          {renderInput('username', 'Enter username', 'text', state.username)}
         </div>
         <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
-            value={state.password}
-            onChange={handleInputChange}
-          />
+          <label htmlFor="password" className='login__form__label'>Password</label>
+          {renderInput('password', 'Enter password', 'password', state.password)}
         </div>
-        <button type="submit" disabled={!canSubmit}>
+        <button className='login__form__button' type="submit" disabled={!canSubmit}>
           Login
         </button>
         {renderError()}
       </form>
-    )    
-}
+    )
+  }
+
+//   const renderLoginForm = () => {
+//     return (
+//       <form onSubmit={handleSubmit} className='login__form'>
+//         <div>
+//           <label htmlFor="username" className='login__form__label'>Username</label>
+//           <input
+//             className='login__form__input'
+//             type="text"
+//             name="username"
+//             ref={userRef}
+//             value={state.username}
+//             onChange={handleInputChange}
+//           />
+//         </div>
+//         <div>
+//           <label htmlFor="password" className='login__form__label'>Password</label>
+//           <input
+//             className='login__form__input'
+//             type="password"
+//             name="password"
+//             value={state.password}
+//             onChange={handleInputChange}
+//           />
+//         </div>
+//         <button type="submit" disabled={!canSubmit}>
+//           Login
+//         </button>
+//         {renderError()}
+//       </form>
+//     )    
+// }
     
   return (
     <div>

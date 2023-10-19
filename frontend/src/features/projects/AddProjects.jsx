@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-// import { unwrapResult } from '@reduxjs/toolkit'
+import { unwrapResult } from '@reduxjs/toolkit'
 import { useAddProjectMutation } from '../../app/api/projectsSlice'
 import { toast } from 'react-toastify'
 
@@ -148,43 +148,44 @@ const AddProjects = () => {
             formData.append('owner', owner)
             technologiesToAdd.forEach(tech => formData.append('technologies', tech))
 
-            const formDataImages = new FormData()
-            imageFilesToUpload.forEach(image => formDataImages.append('images', image))
-
-
-
-            setAddRequestStatus('pending')
             console.log('formData', formData)
             console.log('title', formData.getAll('title'))
             console.log('description', formData.getAll('description'))
             console.log('link', formData.getAll('link'))
             console.log('owner', formData.getAll('owner'))
-            console.log('images', formData.getAll('images'))
             console.log('technologies', formData.getAll('technologies'))
 
+            const result = await addProject(formData)
+            console.log('result', result)
 
-            const resultAction = await addProject(formData)
-            const resultActionImages = await uploadImages(formDataImages)
-            console.log('resultAction', resultAction)
-            // unwrapResult(resultAction)
+            //! Récupérer l'id du projet ajouté 
+            //! return undefined
+            // const { _id } = unwrapResult(result)
+            // console.log('_id', _id)
             
-            // if(!resultAction.error) {
-            //     toast.success('Project added successfully')
-            //     handleClearForm(e)
-            //     navigate('/projects')
-            //     window.location.reload()
-            // } else {
-            //     handleClearForm(e)
-            //     window.location.reload()
-            //     toast.error('Failed to add the project')
-            // }
+
+
+            // const formDataImages = new FormData()
+            // imageFilesToUpload.forEach(image => formDataImages.append('images', image))
+            // formDataImages.append('projectId', _id)
+            // console.log('images', formDataImages.getAll('images'))
+            // const resultActionImages = await uploadImages(formDataImages)
+
+            // const { images } = resultActionImages.payload
+            // console.log('images', images)
+
+            toast.success('Project added successfully')
+            navigate(`/dashboard`)
+            window.location.reload()
 
         } catch (err) {
             toast.error('Failed to add the project')
+            console.log('Failed to add the project', err)
         }
 
     }
 
+    //! a revoir
     const renderInput = (name, label, type = 'text') => {
         return (
             <>
