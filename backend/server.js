@@ -41,7 +41,10 @@ app.use("/api/projects", require('./routes/api/projects'))
 ///Users routes
 app.use("/api/users", require('./routes/api/users'))
 ///Upload file routes
+app.use("/api/images", require('./routes/api/images'))
 app.use("/uploads", express.static(path.join(__dirname, "uploads")))
+///Contact routes
+// app.use("/api/contact", require('./routes/api/contact'))
 
 
 
