@@ -16,6 +16,8 @@ import { logout } from './app/api/authSlice'
 // import Form from './features/projects/Form'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 
 function App() {
@@ -29,20 +31,13 @@ function App() {
     draggable: true,
   })
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     if (!accessToken) return
-  //     notifyLostToken()
-  //     dispatch(logout())
-  //   }
-  //     , 3600000)
-  // }
-  //   , [dispatch])
+  useEffect(() => {
+    if (!accessToken) return
+    notifyLostToken()
+    dispatch(logout())
+  }
+    , [dispatch])
  
- 
-
-  
-  
 
   return (
     <Routes>
@@ -60,7 +55,6 @@ function App() {
         <Route element={<RequireAuth />} >
           <Route path="dashboard" element={<Dashboard_Layout />} >
             <Route index element={<Dashboard />} />
-            {/* <Route path='add' element={<AddForm />} /> */}
             <Route path='add' element={<AddProjects />} />
             <Route path='edit/:id' element={<EditForm />} />
             
