@@ -22,6 +22,7 @@ const getProjectById = async (req, res) => {
 
 const createProject = async (req, res) => {
     const { title, description, owner, technologies, link } = req.body
+    console.log(req.body)
     if (!title || !description || !owner) return res.status(400).json({ 'message': 'Missing required fields' })
     try {
         const existingProject = await Project.findOne({ title: title }).exec()
@@ -36,7 +37,7 @@ const createProject = async (req, res) => {
             createdAt: new Date().toISOString(),
         })
         const result = await project.save()
-        res.status(201).json({ 'success': `Project ${title} created successfully` })
+        res.status(201).json({ 'success': `Project ${title} created successfully`, 'project': result, 'id': result._id })
     } catch (err) {
         res.status(500).json({ 'message': err.message })
     }
