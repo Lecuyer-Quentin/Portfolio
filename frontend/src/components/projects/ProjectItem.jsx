@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { InfinitySpin } from 'react-loader-spinner'
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
 import { useDeleteProjectMutation, useGetProjectQuery } from '../../app/api/projectsSlice';
+import img1 from '../../assets/logos/mongodb.png';
+import img2 from '../../assets/logos/node-logo.png';
+import img3 from '../../assets/logos/react-logo.png';
 
 const ProjectItem = ({ _id }) => {
     const { data: project, isLoading } = useGetProjectQuery(_id)
@@ -13,20 +16,20 @@ const ProjectItem = ({ _id }) => {
     const path = window.location.pathname
     const reload = () => window.location.reload()
     const [deleteProject] = useDeleteProjectMutation()
-    const [name, setName] = useState('')
+    const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [link, setLink] = useState('')
     const [owner, setOwner] = useState('')
-    const [imagesP, setImages] = useState([])
+    const [images, setImages] = useState([])
     const [techs, setTechs] = useState([])
     
-    console.log(project)
+    // console.log(project)
 
 
 
     useEffect(() => {
         if (isLoading) return
-        setName(project.name)
+        setTitle(project.title)
         setDescription(project.description)
         setImages(project.images)
         setTechs(project.technologies)
@@ -39,8 +42,10 @@ const ProjectItem = ({ _id }) => {
         reload()
     }
 
+    const img =[img1, img2, img3]
+
     const renderImages = () => {
-        return imagesP.map((image, index) => {
+        return img.map((image, index) => {
             return (
                 <div key={index}>
                     <img src={image} alt={project.name} />
@@ -59,10 +64,12 @@ const ProjectItem = ({ _id }) => {
         })
     }
 
+
+    //! a revoir
     const renderButtons = () => {
         if (path === '/projects') {
             return (
-                <Link to={`/projects/${_id}`}>,
+                <Link to={`/projects/${_id}`}>
                     <button>View more</button>
                 </Link>
             )
@@ -87,12 +94,11 @@ const ProjectItem = ({ _id }) => {
     }
 
     const settings = {
-        dots: true,
         infinite: true,
-        speed: 500,
+        speed: 2500,
         slidesToShow: 1,
-        arrows: true,
-        slidesToScroll: 1
+        slidesToScroll: 1,
+        autoplay: true,
     };
 
     const renderSlider = () => {
@@ -114,18 +120,22 @@ const ProjectItem = ({ _id }) => {
 
     const renderProject = () => {
         return (
-            <div className='project-item'>
-                <div className='project-item__image'>
+            <div className='projects__list__item'>
+                <h3 className='projects__list__item__title'>{title}</h3>
+                <div className='projects__list__item__images'>
                     {renderSlider()}
                 </div>
-                <div className='project-item__info'>
-                    <h3>{name}</h3>
-                    <p>{description}</p>
-                    <div className='project-item__info__techs'>
+                <div className='projects__list__item__info'>
+                    <p className='projects__list__item__info__description'>Description: {description}</p>
+                    <div className='projects__list__item__info__techs'>
                         {renderTechs()}
                     </div>
-                    <p>{link}</p>
-                    <p>{owner}</p>
+                    <p className='projects__list__item__info__link'>GitHub:
+                        <a>Lien{link}</a>
+                    </p>
+                    <p className='projects__list__item__info__owner'>Owner: {owner}</p>
+                </div>
+                <div className='projects__list__item__button'>
                     {renderButtons()}
                 </div>
             </div>

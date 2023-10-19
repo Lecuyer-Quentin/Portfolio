@@ -1,51 +1,37 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { dataContext } from "../../app/dataContext/DataContext"
 import FeatureItem from "./FeatureItem";
 
 const Features = () => {
     const { features } = useContext(dataContext);
-    console.log('features', features)
+    const [currentFeature, setCurrentFeature] = useState(0);
+    console.log(currentFeature)
 
+    const handleNext = () => {
+        setCurrentFeature((currentFeature + 1) % features.length);
+    }
+ 
     const renderFeatures = () => {
         return features.map((feature, index) => {
+            const isActive = index === currentFeature;
             return (
-                <FeatureItem key={index} {...feature} />
+                <div key={index} className={`features__container__slide ${isActive ? "active" : ""}`} onClick={handleNext}>
+                    <FeatureItem {...feature} />
+                </div>
             )
         })
     }
 
     return (
-        <section style={featuresContainer} >
-            <div className="features__content">
-                <h2 className="features__title">Mes compétences</h2>
-            </div>
-            <div style={featuresItems}>
+        <>
+            <h2 className="features__title">Mes compétences</h2>
+            <div className="features__container">
                 {renderFeatures()}
             </div>
-        </section>
+        </>
+           
     )
 
 }
 
 export default Features
-
-const featuresContainer = {
-    maxWidth: '1200px',
-    margin: '0 auto',
-    padding: '0 20px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'space-evenly',
-}
-const featuresItems = {
-    maxWidth: '50em',
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    margin: '0 auto',
-    // overflow: 'hidden',
-
-}
