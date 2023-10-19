@@ -1,0 +1,21 @@
+// @import "~@fortawesome/fontawesome-free/scss/fontawesome";
+// @import "~@fortawesome/fontawesome-free/scss/solid";
+// @import "~@fortawesome/fontawesome-free/scss/regular";
+
+@import './normalize.scss';
+@import "./general.scss";
+@import "./variables.scss";
+
+@import './layouts/header';
+@import './layouts/footer';
+
+@import './components/hero';
+@import './components/features';
+@import './components/contact';
+@import './components/lastProjects';
+
+
+@import './pages/public';
+@import './pages/login';
+@import './pages/projects';
+@import './pages/dashboard';

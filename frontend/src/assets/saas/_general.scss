@@ -1,0 +1,29 @@
+body{
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    // align-items: center;
+    font-family: 'Fantasque Sans Mono', sans-serif;
+}
+
+main {
+    width: 100vw;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    // align-items: center;
+   
+}
+ul, li, a, button{
+    list-style: none;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;  
+}
+img{
+    max-width: 100%;
+    box-sizing: border-box;
+}
+

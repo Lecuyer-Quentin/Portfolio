@@ -1,0 +1,81 @@
+.contact{
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba($tertiary-color, .1);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    transition: all .8s ease-in-out;
+
+    // &:focus-within{
+    //     background-color: rgba($tertiary-color, .5);
+    // }
+    h2,p{
+        text-align: center;
+        position: relative;
+    }
+    p{
+        position: relative;
+        bottom: 2rem;
+    }
+
+    &__form{
+        position: relative;
+        bottom: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        width: 90%;
+        height: 30rem;
+        transition: all .3s ease-in-out;
+
+        // &__label{
+        //     // font-size: 1.2rem;
+        //     color: rgba($tertiary-color, .8);
+        //     // margin-bottom: 1rem;
+        // }
+
+        &__input , &__textarea{
+            border: none;
+            border-radius: 15px;
+            padding: 20px 30px;
+            font-size: 1.2rem;
+            background-color: rgba($tertiary-color, .1);
+            transition: all .4s ease-in-out;
+            &:hover, &:focus{
+                background-color: rgba($tertiary-color, .8);
+                color: $secondary-color;
+            }
+            &::placeholder{
+                color: rgba($tertiary-color, .5);
+            }
+            &:hover::placeholder, &:focus::placeholder{
+                color: $secondary-color;
+            }
+        }
+
+        &__textarea{
+            padding-right: 3rem;
+            resize: none;   
+        }
+
+        & button {
+            border: none;
+            border-radius: 15px;
+            padding: 10px 40px;
+            font-size: 1.2rem;
+            background-color: rgba($secondary-color, .9);
+            transition: all .3s ease-in-out;
+            position : relative;
+            top: 1rem;
+            &:hover{
+                background-color: rgba($tertiary-color, .8);
+                color: $secondary-color;
+            }
+        }
+    }
+}
