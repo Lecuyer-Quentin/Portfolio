@@ -13,7 +13,7 @@ const projectSchema = new Schema({
     },
     owner: {
         type: String,
-        default: '',
+        required: true,
     },
     images: {
         type: Array,
