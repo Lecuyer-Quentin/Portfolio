@@ -2,10 +2,10 @@ import { Outlet } from "react-router-dom"
 
 const Layout = () => {
   return (
-    <div>
-      <p>Projects</p>
+    <section className="projects">
+      <h3>Projects</h3>
       <Outlet />
-    </div>
+    </section>
   )
 }
 

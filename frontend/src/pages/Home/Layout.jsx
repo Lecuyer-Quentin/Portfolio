@@ -9,8 +9,11 @@ const Layout = () => {
         <main>
             <ToastContainer />
             <Header />
-            <Outlet />
+            <section className="public">
+                <Outlet />
+            </section>
             <Footer />
+
         </main>
     )
 }
