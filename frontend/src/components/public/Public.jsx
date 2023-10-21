@@ -2,13 +2,10 @@ import Hero from './Hero'
 import Features from './Features'
 import Contact from './Contact'
 import LastProjects from './LastProjects'
-import { HeroDataProvider, FeaturesDataProvider, dataContext } from '../../app/dataContext/DataContext'
+import { FeaturesDataProvider } from '../../app/dataContext/DataContext'
 import ReactFullPage from '@fullpage/react-fullpage';
-// import { Link } from 'react-router-dom'
-// import { useContext } from 'react';
 
 const Public = () => {
-  // const { features } = useContext(dataContext)
 
    const renderAnchorLink = () => {
     return (
@@ -44,13 +41,13 @@ const Public = () => {
           return (
             <ReactFullPage.Wrapper>
 
-              <HeroDataProvider>
+              {/* <HeroDataProvider> */}
                 <section className="section" data-anchor='home'>
                   <article className="hero">
                     <Hero />
                   </article>
                 </section>
-              </HeroDataProvider>
+              {/* </HeroDataProvider> */}
 
               <FeaturesDataProvider>
                 <section className="section" data-anchor='features'>

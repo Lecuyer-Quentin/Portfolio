@@ -4,27 +4,63 @@ const FeatureItem = ( feature ) => {
 
   const renderImages = () => {
     return (
-      <div className="features__container__card__img">
-        {feature.images.map((image, index) => {
+      <>
+         {feature.images.map((image, index) => {
           return (
             <img key={index} src={image.src} alt={image.alt} />
           )
         }
         )}
-      </div>
+      </>
+       
     )
   }
+  const renderWordsTitle = () => {
+    return (
+      <>
+        {title.split(' ').map((words, index) => {
 
+          return (
+            <span key={index} className="words">
+              {words.split('').map((letter, index) => {
+                console.log(letter)
+                return (
+                  <span key={index} className="words__letter">
+                    {letter}
+                  </span>
+                )
+              })}
+            </span>
+          )
+        }
+        )}
+      </>
+    )
+  }
+  
   const renderFeatureItem = () => {
     return (
-      <div className="features__container__card">
-            {renderImages()}
-        <div className="features__container__card__content">
-          <h3 className="features__container__card__content__title">{title}</h3>
-          <p className="features__container__card__content__description">{description}</p>
-          <button className="features__container__card__content__button">Learn More</button>
+      <>
+      <li>
+        <div className="features__hexa__categories__flip-container" onTouchStart={() => this.classList.toggle('hover')}>
+            <div className="features__hexa__categories__flip-container__flipper">
+                <div className="features__hexa__categories__flip-container__flipper__front">
+                    {renderImages()}
+                
+                  <p>{title}</p>
+                
+                </div>
+                <div className="features__hexa__categories__flip-container__flipper__back">
+                    <div className="features__hexa__categories__flip-container__flipper__back__flip-content">
+                        <p>
+                            {description}
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>    
+        </li>
+        </>
     )
   }
 

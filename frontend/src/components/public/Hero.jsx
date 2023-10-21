@@ -1,69 +1,63 @@
-import { useContext } from 'react'
-import { dataContext } from '../../app/dataContext/DataContext'
-
-import img1 from '../../assets/logos/mongodb.png';
-import img2 from '../../assets/logos/node-logo.png';
-import img3 from '../../assets/logos/react-logo.png';
-
-
+import React from 'react'
+import heroImage from '../../assets/images/heroImage4.jpg'
 
 
 const Hero = () => {
-    const { hero } = useContext(dataContext);
-    const { title, description } = hero
-    const { src, alt } = hero.images[0]
+  return (
+      <>
+          <div className='hero__image'>
+              <img src={heroImage} alt="heroImage" />
+          </div>
+          <div className='hero__windows'></div>
 
-    const logos = [img1, img3, img2]
-    
-    const logosWithId = logos.map(() => {
-        return { id: Math.random() }
-    })
+            <div className='hero__text'>
+                <h1 className='hero__text__title'>Good News Everyone! <br /> As a
+                  <div className='hero__text__slider'>
+                      <ul className='hero__text__slider__words'>
+                            <li className='hero__text__slider__words__item'> Frontend Developer</li>
+                            <li className='hero__text__slider__words__item'> Backend Developer</li>
+                            <li className='hero__text__slider__words__item'> Human</li>  
+                      </ul>
+                  </div>
+                  <br/> I
+                  <div className='hero__text__slider'>
+                        <ul className='hero__text__slider__words'>
+                                <li className='hero__text__slider__words__item'> create </li>
+                                <li className='hero__text__slider__words__item'> develop  </li>
+                                <li className='hero__text__slider__words__item'> share</li>  
+                      </ul>
+                  </div>
+                your
+                  <div className='hero__text__slider'>
+                        <ul className='hero__text__slider__words'>
+                                <li className='hero__text__slider__words__item'> website</li>
+                                <li className='hero__text__slider__words__item'> application</li>
+                                <li className='hero__text__slider__words__item'> stories</li>  
+                      </ul>
+                  </div>
+                </h1>
+          </div>
 
-    const renderLogos = () => {
-        return logosWithId.map((logo, id) => {
-            return (
-                <div key={id}>
-                    <img src={logos[id]} alt={logo.id} />
-                </div>
-            )
-        }
-        )
-    }
-
-    const renderDescription = () => {
-        return description.map((text, index) => {
-            return (
-                <div key={index}>
-                    {text}
-                </div>
-            )
-        })
-    }
-
-    const renderHero = () => {
-        return (
-            <>
-                <div className="hero__content">
-                    <h1 className="hero__content__title">{title}</h1>
-                    {renderDescription()}
-                    <a href="https://storyset.com/web" target='_blank'>Illustrations by Storyset</a>
-                </div>   
-                <div className="hero__img">
-                        <img src={src} alt={alt} />
-                </div>
-                <div className="hero__logos">
-                        {renderLogos()}
-                    </div>
-
-            </>
-        )
-    }
-
-    return (
-        <>
-            {renderHero()}
-        </>
-      
+          <div className='hero__fly'>
+              <span className='hero__fly__item' >
+                  Fullstack Developer
+              </span>
+                <span className='hero__fly__item' >
+                  Design UX/UI
+              </span>
+              <span className='hero__fly__item' >
+                    Web Development
+              </span>
+                <span className='hero__fly__item' >
+                  Motion Picture
+              </span>
+                <span className='hero__fly__item' >
+                  Agile
+                </span>
+          </div>
+          
+          
+      </>
   )
 }
 
