@@ -6,6 +6,7 @@ import Dashboard from './components/dashboard/Dashboard'
 import RequireAuth from './features/auth/RequireAuth'
 import Login from './pages/Login'
 import ProjectsPage from './pages/Projects/Layout'
+import Error404 from './pages/Error404'
 import ProjectsList from './components/projects/ProjectsList'
 import ProjectDetails from './components/projects/ProjectDetails'
 import AddProjects from './features/projects/AddProjects'
@@ -13,7 +14,6 @@ import EditForm from './features/projects/EditForm'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { logout } from './app/api/authSlice'
-// import Form from './features/projects/Form'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import "slick-carousel/slick/slick.css";
@@ -60,7 +60,7 @@ function App() {
             
           </Route>
         </Route>
-        {/* <Route path="*" element={<NotFound />} /> */}
+        <Route path="*" element={<Error404 />} />
       </Route>
     </Routes>
   )
