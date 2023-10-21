@@ -6,6 +6,8 @@
 @import "./general.scss";
 @import "./variables.scss";
 
+@import "./helpers/keyframe";
+
 @import './layouts/header';
 @import './layouts/footer';
 
@@ -19,3 +21,6 @@
 @import './pages/login';
 @import './pages/projects';
 @import './pages/dashboard';
+@import './pages/error404';
+
+

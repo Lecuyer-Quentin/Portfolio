@@ -1,0 +1,80 @@
+@keyframes slice {
+    0%,
+    25% {
+        transform: translateY(0);
+    }
+    30%,
+    55% {
+        transform: translateY(-35%);
+    }
+    60%,
+    85% {
+        transform: translateY(-70%);
+    }
+}
+
+@keyframes fly-in{
+    0%{
+        transform: translateX(350%);
+        opacity: 0;
+    }
+    50%{
+        transform: translateX(0%);
+        opacity: 1;
+    }
+    100%{
+        transform: translateX(-350%);
+        opacity: 0;
+    }
+}
+
+@keyframes fade-in {
+    from{
+        opacity: 0;
+        transform: translateX(50%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0%);
+    }
+}
+
+// .fade-in{
+//     opacity: 0;
+//     animation: fade-in 2s ease-in-out forwards infinite;
+//     animation-delay: calc(var(--index) * .8s);
+// }
+
+
+@keyframes glitch {
+    0%{
+        text-shadow: -2px 3px 0 red, 2px -3px 0 blue;
+        transform: translate(var(--glitch-translate));
+    }
+    2%{
+        text-shadow: 2px -3px 0 red, -2px 3px 0 blue; 
+    }
+    4%, 100%{
+        text-shadow: none; transform: none;
+    }
+}
+
+@keyframes stack {
+    0%{
+        opacity: 0;
+        transform: translateY(-50%);
+        text-shadow: -2px 3px 0 red, 2px -3px 0 blue;
+    }
+    60%{
+        opacity:.5;
+        transform: translate(50%);
+    }
+    80%{
+        transform: none;
+        opacity:1;
+        text-shadow: 2px -3px 0 red, -2px 3px 0 blue;
+    }
+    100%{
+        text-shadow: none;
+    }
+}
